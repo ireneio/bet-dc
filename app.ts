@@ -1,4 +1,4 @@
-import express, { Application, Request, Response, text } from "express"
+import express, { Application, Request, Response } from "express"
 import * as path from 'path'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
