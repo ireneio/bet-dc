@@ -1,4 +1,4 @@
-# node-ts-proxy
+# crawler-discord-webook
 
 ## Stack
 
@@ -21,7 +21,7 @@ $ npm run build:dev
 $ npm run dev
 
 # build for production and launch server
-$ npm run build:prod
+$ npm run build
 $ npm run start
 
 # build and run local Docker instance
