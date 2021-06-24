@@ -57,7 +57,7 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
         // @ts-ignore
         .setURL(url)
         .addField('價格', price, true)
-        .setFooter(`最新 ${index}/${limit} 筆`)
+        .setFooter(`最新 ${index + 1}/${limit} 筆`)
         .setTimestamp()
       messageList.push(embed)
     })
