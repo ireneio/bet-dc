@@ -49,7 +49,7 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
 
     const messageList: MessageBuilder[] = []
 
-    list.forEach((item: any) => {
+    list.forEach((item: any, index: number) => {
       const { url, price, title } = item
       const embed = new MessageBuilder()
         .setTitle(title)
@@ -57,7 +57,7 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
         // @ts-ignore
         .setURL(url)
         .addField('價格', price, true)
-        .setFooter(`最新 ${limit} 筆`)
+        .setFooter(`最新 ${index}/${limit} 筆`)
         .setTimestamp()
       messageList.push(embed)
     })
