@@ -1,13 +1,13 @@
 import axios, { AxiosRequestConfig, AxiosInstance } from 'axios'
 
-const config: AxiosRequestConfig = {
-  // baseURL: process.env.NODE_APP_API_URL || '',
+const axosConfig: AxiosRequestConfig = {
+  baseURL: 'https://www.asos.com/',
   timeout: Number(process.env.NODE_APP_TIMEOUT_LIMIT) || 15000,
   headers: {}
 }
 
-const axiosInstance: AxiosInstance = axios.create({
-  ...config
+export const axos: AxiosInstance = axios.create({
+  ...axosConfig
 })
 
-export default axiosInstance
+export default () => {}

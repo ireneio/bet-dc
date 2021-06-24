@@ -1,12 +1,14 @@
-import express, { Application, Request, Response } from "express"
+import express, { Application, Request, Response, text } from "express"
 import * as path from 'path'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
-import { HttpResponse } from './utils/http'
 import cors from 'cors'
 
 import indexRouter from './routes/index'
 
+import { runPuppeteer } from '~/utils/cron'
+
+await runPuppeteer()
 
 // Init Express
 const app: Application = express()
@@ -29,7 +31,7 @@ app.use('/', indexRouter)
 
 // 403 all other routes
 app.use('*', function(req: Request, res: Response, next: Function): void {
-  res.send(new HttpResponse(403, 'forbidden'))
+  res.send({ code: 403, message: 'forbidden' })
 })
 
 export default app

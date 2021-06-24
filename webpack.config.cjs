@@ -2,6 +2,7 @@ const path = require('path')
 const nodeExternals = require('webpack-node-externals')
 
 const config = {
+  mode: 'development',
   target: 'node',
   externals: [nodeExternals()],
   externalsType: "import",
@@ -34,6 +35,9 @@ const config = {
     extensions: [".ts", ".tsx", ".js"],
     fallback: {
       http: require.resolve("http")
+    },
+    alias: {
+      '~': path.resolve(__dirname, '')
     }
   }
 }

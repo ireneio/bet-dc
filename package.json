@@ -1,13 +1,13 @@
 {
-  "name": "node-ts-proxy",
+  "name": "sneaker-crawler",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "babel-node ./dist/app.bundle.js",
     "dev": "npm-run-all --parallel build:dev watch",
-    "watch": "cross-env NODE_APP_API_URL=https://ire1.blob.core.windows.net/personal-portfolio NODE_APP_CORS_URL=http://localhost:3000 nodemon --exec babel-node ./dist/app.bundle.js",
+    "watch": "nodemon --exec babel-node ./dist/app.bundle.js",
     "build:dev": "webpack-cli --config webpack.config.cjs -w --progress --color",
-    "build:prod": "webpack --config webpack.config.cjs --progress --color",
+    "build": "webpack --config webpack.config.cjs --progress --color",
     "docker:dev": "bash ./docker-build-run.sh",
     "docker:hub": "bash ./docker-build-push.sh",
     "azure": "bash ./azure-deploy.sh"
@@ -23,17 +23,21 @@
     "babel-preset-env": "^1.7.0",
     "chalk": "^4.1.0",
     "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
     "cross-env": "^7.0.3",
+    "discord-webhook-node": "^1.1.8",
     "express": "~4.16.1",
     "http": "0.0.1-security",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
+    "node-cron": "^3.0.0",
     "nodemon": "^2.0.6",
+    "npm-run-all": "^4.1.5",
+    "puppeteer": "^9.1.0",
     "webpack-node-externals": "^2.5.2",
     "websocket": "^1.0.33",
     "ws": "^7.4.2",
-    "cors": "^2.8.5",
-    "npm-run-all": "^4.1.5"
+    "yarn": "^1.22.10"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.2",
@@ -41,6 +45,7 @@
     "@types/express": "^4.17.11",
     "@types/http-errors": "^1.8.0",
     "@types/morgan": "^1.9.2",
+    "@types/node-cron": "^2.0.3",
     "@types/tedious": "^4.0.3",
     "@types/ws": "^7.4.0",
     "ts-loader": "^8.0.14",
