@@ -64,7 +64,6 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
 
     await bulkSendMessage(messageList, webhookUrl)
 
-
     return { status: true, identifier: `asos-${crawlerName}` }
   } catch(e) {
     console.log('ERROR:', e.message)
