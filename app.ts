@@ -1,8 +1,8 @@
 import express, { Application, Request, Response } from "express"
-import * as path from 'path'
-import cookieParser from 'cookie-parser'
+// import * as path from 'path'
+// import cookieParser from 'cookie-parser'
 import logger from 'morgan'
-import cors from 'cors'
+// import cors from 'cors'
 
 import indexRouter from './routes/index'
 
@@ -14,10 +14,10 @@ runPuppeteer()
 const app: Application = express()
 
 // cors
-const corsOptions = {
-  origin: process.env.NODE_APP_CORS_URL || 'http://localhost:3000',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
+// const corsOptions = {
+//   origin: process.env.NODE_APP_CORS_URL || 'http://localhost:3000',
+//   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+// }
 
 // app.use(cors(corsOptions))
 
