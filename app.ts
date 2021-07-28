@@ -8,7 +8,7 @@ import indexRouter from './routes/index'
 
 import { runPuppeteer } from '~/utils/cron'
 
-await runPuppeteer()
+runPuppeteer()
 
 // Init Express
 const app: Application = express()

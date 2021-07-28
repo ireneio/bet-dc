@@ -127,5 +127,4 @@ async function runLogic() {
 
 export default async function run() {
   await runLogic()
-  console.log('[puppeteer] ran script once.')
 }
