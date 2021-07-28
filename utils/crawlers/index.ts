@@ -1,5 +1,13 @@
-import asosSearch from './asos-search'
+import asos from './asos'
+import footLocker from './foot-locker'
+import newBalance from './new-balance'
+import nike from './nike'
+import afew from './afew'
 
 export default {
-  asosSearch
+  asos,
+  footLocker,
+  newBalance,
+  nike,
+  afew
 }

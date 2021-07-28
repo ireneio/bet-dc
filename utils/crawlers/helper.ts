@@ -1,17 +1,9 @@
-// import { Page } from "puppeteer";
+export interface CrawlerReturnObject {
+  title: string
+  url: string
+  price: string
+}
 
-// export async function pageEvaluateThenScroll(page: Page, cb: Function, cbArgs: any[]) {
-//   return await page.evaluate((cb, cbArgs) => {
-//     window.scrollTo(0,window.document.body.scrollHeight)
-//     return cb(...cbArgs)
-//   })
-// }
-
-export function bulkGetElements(
-  selector: string,
-  cb: (element: Element) => {},
-  limit: number
-) {
-  const map = Array.from(document.querySelectorAll(selector), cb)
-  return map.slice(0, limit)
+export function filterDuplicate(newArr: CrawlerReturnObject[], oldArr: CrawlerReturnObject[]): CrawlerReturnObject[] {
+  return newArr.filter((newArrItem) => !oldArr.find(oldArrItem => oldArrItem.url === newArrItem.url))
 }

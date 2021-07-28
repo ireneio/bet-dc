@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', indexRouter)
 
 // 403 all other routes
-app.use('*', function(req: Request, res: Response, next: Function): void {
+app.use('*', function (req: Request, res: Response, next: Function): void {
   res.send({ code: 403, message: 'forbidden' })
 })
 
