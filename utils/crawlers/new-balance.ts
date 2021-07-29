@@ -18,7 +18,7 @@ let previousEnList: CrawlerReturnObject[] = []
 const vh = 812
 const vw = 375
 
-export default async function crawler({ queryBrand, limit, webhookUrl, crawlerName, siteBrand }: CrawlerInput): Promise<{ status: boolean, identifier: string }> {
+export default async function crawler({ queryBrand, limit, webhookUrl, crawlerName, siteBrand }: CrawlerInput): Promise<{ status: boolean, identifier: string, message: string }> {
   const browser = await puppeteer.launch({
     headless: isHeadless,
     args: [
@@ -66,11 +66,13 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
         const url = `${a?.getAttribute('href')}`
         const title = `${a?.textContent}`
         const price = `${element.querySelector('.price-value')?.children[0].textContent}`
+        const img = `${element.parentElement?.parentElement?.children[0].querySelector('.tile-image')?.getAttribute('src')}`
 
         return {
           title,
           url,
-          price: price?.replaceAll('\n', '')
+          price: price?.replaceAll('\n', ''),
+          img
         }
       }
 
@@ -91,7 +93,7 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
     const messageList: MessageBuilder[] = []
 
     list.forEach((item: any, index: number) => {
-      const { url, price, title } = item
+      const { url, price, title, img } = item
       const authorText = `${siteBrand}_${queryBrand}`.toUpperCase()
       const embed = new MessageBuilder()
         .setTitle(title)
@@ -100,16 +102,17 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
         .setURL(`${host}${url}`)
         .addField('價格', price, true)
         .setFooter(`最新 ${index + 1}/${limit} 筆`)
+        .setImage(img)
         .setTimestamp()
       messageList.push(embed)
     })
 
     await bulkSendMessage(messageList, webhookUrl)
 
-    return { status: true, identifier: `${siteBrand}-${crawlerName}` }
+    return { status: true, identifier: `${siteBrand}-${crawlerName}`, message: 'success' }
   } catch (e) {
     console.log('ERROR:', e.message)
-    return { status: false, identifier: `${siteBrand}-${crawlerName}` }
+    return { status: false, identifier: `${siteBrand}-${crawlerName}`, message: e.message }
   } finally {
     await browser.close()
   }

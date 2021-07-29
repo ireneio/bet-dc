@@ -3,7 +3,8 @@ import { bulkSendMessage } from '../discord/webhook'
 import puppeteer from 'puppeteer'
 import { isHeadless } from '../puppeteer'
 import { CrawlerReturnObject, filterDuplicate } from './helper'
-import { brandLogo } from './constants'
+import { brandLogo, imgDefault } from './constants'
+import { decode } from 'node-base64-image'
 
 interface CrawlerInput {
   queryBrand: 'jp' | 'us',
@@ -16,10 +17,13 @@ interface CrawlerInput {
 let previousEnList: CrawlerReturnObject[] = []
 let previousJpList: CrawlerReturnObject[] = []
 
-const vh = 812
-const vw = 375
+// const vh = 812
+// const vw = 375
 
-export default async function crawler({ queryBrand, limit, webhookUrl, crawlerName, siteBrand }: CrawlerInput): Promise<{ status: boolean, identifier: string }> {
+const vh = 1080
+const vw = 1920
+
+export default async function crawler({ queryBrand, limit, webhookUrl, crawlerName, siteBrand }: CrawlerInput): Promise<{ status: boolean, identifier: string, message: string }> {
   const locale = {
     full: queryBrand === 'jp' ? 'ja-JP' : 'en-US',
     abbrv: queryBrand === 'jp' ? 'ja' : 'en',
@@ -75,11 +79,13 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
         const url = `${a?.getAttribute('href')}`
         const title = `${a?.textContent}`
         const price = `${element?.querySelector('.is--current-price')?.textContent}`
+        const img = `${element.querySelector('img')?.getAttribute('src')}`
 
         return {
           title,
           url,
-          price
+          price,
+          img
         }
       }
 
@@ -90,6 +96,17 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
       return map
     })
     list = list.slice(0, limit)
+
+    for (let i = 0; i < list.length; i++) {
+      const img = list[i].img
+      if (!img.includes('https')) {
+        const imgName = list[i].title.replaceAll(' ', '').replaceAll(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '')
+        const imgExt = '.jpg'
+        await decode(img, { fname: `public/${imgName}`, ext: imgExt })
+        const _img = `${process.env.SELF_URL}/${imgName}${imgExt}`
+        list[i] = { ...list[i], img: _img }
+      }
+    }
 
     if (queryBrand === 'jp') {
       const _list = filterDuplicate(list, previousJpList)
@@ -106,8 +123,9 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
     const messageList: MessageBuilder[] = []
 
     list.forEach((item: any, index: number) => {
-      const { url, price, title } = item
+      const { url, price, title, img } = item
       const authorText = `${siteBrand}_${queryBrand}`.toUpperCase()
+      const _img = img === 'undefined' ? imgDefault : img
       const embed = new MessageBuilder()
         .setTitle(title)
         .setAuthor(`${authorText} [Search: New Shoes]`, brandLogo.nike, baseUrl)
@@ -115,16 +133,17 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
         .setURL(url)
         .addField('價格', price, true)
         .setFooter(`最新 ${index + 1}/${limit} 筆`)
+        .setImage(_img)
         .setTimestamp()
       messageList.push(embed)
     })
 
     await bulkSendMessage(messageList, webhookUrl)
 
-    return { status: true, identifier: `${siteBrand}-${crawlerName}` }
+    return { status: true, identifier: `${siteBrand}-${crawlerName}`, message: 'success' }
   } catch (e) {
     console.log('ERROR:', e.message)
-    return { status: false, identifier: `${siteBrand}-${crawlerName}` }
+    return { status: false, identifier: `${siteBrand}-${crawlerName}`, message: e.message }
   } finally {
     await browser.close()
   }

@@ -6,3 +6,5 @@ export const brandLogo = {
   nike: 'https://i1.wp.com/cdn3.iconfinder.com/data/icons/popular-services-brands-vol-2/512/nike-512.png',
   afew: 'https://usercontent.one/wp/www.afew.dk/wp-content/uploads/2018/09/A-FEW-logo.png'
 }
+
+export const imgDefault = 'https://cdn.discordapp.com/embed/avatars/0.png'
