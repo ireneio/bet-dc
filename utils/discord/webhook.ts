@@ -4,7 +4,7 @@ export const channels = {
   errorHandling: 'https://discord.com/api/webhooks/857592473253183509/U4YBOSzzdphH_X4dbYnfRvVy7Zfadv6UXRspwLCN4UOjLCN_nsCMBdWfpjpukB6dQ36G',
   asosUsConverse: 'https://discord.com/api/webhooks/857650534898860052/jwAAM00hmwGdNLFE8X2j482nydiZZpsS8solwl94hJab5qcVUZsls9k3jyj26ZY5caj9',
   asosUsNewbalance: 'https://discord.com/api/webhooks/857644064894877737/U78_-v5YAyqnzobWo-jUeSzrWn2_HomA5qJRYBKOpqg-QMJWiravkzyCrHRN6Lkyaqc4',
-  asosUsNike: 'https://discord.com/api/webhooks/857638517442347018/eQJrWeTFsgoYmYfv-CJQy_HCr4GR5dBfNFr-ElF3wkC5RabHuRAjhibvEUAOOFr5RRZT',
+  asosUsNike: 'https://discord.com/api/webhooks/870420608406683698/9xDm9Ercl5Xg98oNC0wWC2atHvofQpUlMKsJn9w8CZU7yZUygl1SQWsapvyq3nWiND6g',
   asosUsVans: 'https://discord.com/api/webhooks/869953171932446753/Ifckd1gNOP1gyMrrgfuSK6l3xT-mTI429GaadJC9HbB9zph8gHc9UPq7-fozXNMtNeot',
   asosUsNorthFace: 'https://discord.com/api/webhooks/869953268812509204/3d9eNv82i7YxQ89hZqRIgMnI2c1TKc2exPpHcOtOfL2YCoMUBfKUrDf9rqAOGeH3Od4t',
   asosFrNike: 'https://discord.com/api/webhooks/869956632224890881/qAb7ESHPvlzF140j0qmSEH83gqxQcoMLeOLpeDkAEztt67UEijA9mLmN0fDAA2VNTN35',
