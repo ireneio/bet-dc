@@ -6,9 +6,13 @@ import logger from 'morgan'
 
 import indexRouter from './routes/index'
 
-import { runPuppeteer } from '~/utils/cron'
+import { runPuppeteer, removeImage } from '~/utils/cron'
+import { removeDiskImages } from "./utils/system"
 
-runPuppeteer()
+Promise.all([
+  runPuppeteer(),
+  removeImage()
+])
 
 // Init Express
 const app: Application = express()
@@ -25,17 +29,7 @@ app.use(logger('dev'))
 // app.use(express.json())
 // app.use(express.urlencoded({ extended: false }))
 // app.use(cookieParser())
-app.use(express.static(path.join(__dirname, 'public')))
-
-// console.log(path.join(__dirname, '../public'))
-
-// const ServerRoot = path.resolve(__dirname /** dist */, '..')
-// app.use(express.static(path.join(ServerRoot, 'public')))
-// console.log(path.join(ServerRoot, 'public'))
-
-// app.use(express.static('public'))
-
-// app.get('/', (req: Request, res: Response) => res.sendFile(path.join(__dirname, 'public') + '/AutryActionShoesWMNSMEDALIST1LOWWHITE.jpg'))
+app.use(express.static(path.join(__dirname, '..', 'public')))
 
 app.use('/', indexRouter)
 
@@ -43,5 +37,7 @@ app.use('/', indexRouter)
 app.use('*', function (req: Request, res: Response, next: Function): void {
   res.send({ code: 403, message: 'forbidden' })
 })
+
+removeDiskImages()
 
 export default app

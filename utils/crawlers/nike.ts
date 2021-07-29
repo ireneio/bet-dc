@@ -4,8 +4,6 @@ import puppeteer from 'puppeteer'
 import { isHeadless } from '../puppeteer'
 import { CrawlerReturnObject, filterDuplicate } from './helper'
 import { brandLogo, imgDefault } from './constants'
-import { decode } from 'node-base64-image'
-import { v4 as uuidv4 } from 'uuid'
 
 interface CrawlerInput {
   queryBrand: 'jp' | 'us',

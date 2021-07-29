@@ -1,6 +1,5 @@
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const config = {
   mode: 'development',
@@ -40,14 +39,7 @@ const config = {
     alias: {
       '~': path.resolve(__dirname, '')
     }
-  },
-  plugins: [
-    new CopyWebpackPlugin({
-      patterns: [
-          { from: 'public', to: 'public' }
-      ]
-    })
-  ]
+  }
 }
 
 module.exports = config

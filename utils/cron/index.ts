@@ -1,11 +1,21 @@
 import cron from 'node-cron'
 import run from '~/utils/puppeteer'
+import { removeDiskImages } from '../system'
 
 export async function runPuppeteer() {
-  await run()
-  cron.schedule('*/30 * * * *', async () => {
+  run()
+  cron.schedule('0 */6 * * *', async () => {
     await run()
-    console.log('[puppeteer] ran script once.')
+    console.log('[cron] puppeteer scripts ran.')
   })
-  console.log('running puppeteer scripts every 30 minutes')
+  console.log('[cron] runPuppeteer on 0 */6 * * * (every 6 hours)')
+}
+
+// every sunday
+export async function removeImage() {
+  cron.schedule('0 0 * * 0', async () => {
+    removeDiskImages()
+    console.log('[cron] images removed.')
+  })
+  console.log('[cron] removeImage on 0 0 * * 0  (every sunday)')
 }
