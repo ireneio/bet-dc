@@ -29,15 +29,21 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
 
     await page.goto(baseUrl, { waitUntil: 'networkidle0' })
 
-    await page.setRequestInterception(true)
-    page.on('request', (request) => {
-      if (request.resourceType() === 'image') request.abort()
-      else request.continue()
+    await page.evaluate(() => {
+      window.scrollBy(0, window.innerHeight)
     })
 
-    let list = await page.evaluate(() => {
-      // window.scrollTo(0,window.document.body.scrollHeight)
+    await page.waitForTimeout(3000)
 
+    // await page.setRequestInterception(true)
+    // page.on('request', (request) => {
+    //   if (request.resourceType() === 'image') request.abort()
+    //   else request.continue()
+    // })
+
+    await page.screenshot({ path: '../../public/ss.jpg' })
+
+    let list = await page.evaluate(() => {
       function pageLogic(element: Element) {
         const a = element.querySelector('a')
         const url = `${a?.getAttribute('href')}`

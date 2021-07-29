@@ -5,6 +5,7 @@ import { isHeadless } from '../puppeteer'
 import { CrawlerReturnObject, filterDuplicate } from './helper'
 import { brandLogo, imgDefault } from './constants'
 import { decode } from 'node-base64-image'
+import { v4 as uuidv4 } from 'uuid'
 
 interface CrawlerInput {
   queryBrand: 'jp' | 'us',
@@ -67,11 +68,11 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
 
     await page.goto(baseUrl, { waitUntil: 'networkidle0' })
 
-    await page.setRequestInterception(true)
-    page.on('request', (request) => {
-      if (request.resourceType() === 'image') request.abort()
-      else request.continue()
+    await page.evaluate(() => {
+      window.scrollBy(0, window.innerHeight)
     })
+
+    await page.waitForTimeout(3000)
 
     let list = await page.evaluate(() => {
       function pageLogic(element: Element) {
@@ -96,17 +97,6 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
       return map
     })
     list = list.slice(0, limit)
-
-    for (let i = 0; i < list.length; i++) {
-      const img = list[i].img
-      if (!img.includes('https')) {
-        const imgName = list[i].title.replaceAll(' ', '').replaceAll(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '')
-        const imgExt = '.jpg'
-        await decode(img, { fname: `public/${imgName}`, ext: imgExt })
-        const _img = `${process.env.SELF_URL}/${imgName}${imgExt}`
-        list[i] = { ...list[i], img: _img }
-      }
-    }
 
     if (queryBrand === 'jp') {
       const _list = filterDuplicate(list, previousJpList)

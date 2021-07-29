@@ -125,14 +125,14 @@ async function runLogic() {
       // const nikeUs = await crawlers.nike({ queryBrand: 'us', limit: 8, webhookUrl: channels.nikeUs, crawlerName: 'us', siteBrand: 'nike' })
       // makeCrawlerResult([nikeUs])
 
-        const nikeJp = await crawlers.nike({ queryBrand: 'jp', limit: 8, webhookUrl: channels.nikeJp, crawlerName: 'jp', siteBrand: 'nike' })
-        makeCrawlerResult([nikeJp])
+      // const nikeJp = await crawlers.nike({ queryBrand: 'jp', limit: 8, webhookUrl: channels.nikeJp, crawlerName: 'jp', siteBrand: 'nike' })
+      // makeCrawlerResult([nikeJp])
 
-      //   const asosUs = await Promise.all([
-      //   crawlers.asos({ queryBrand: 'nike', limit: 8, webhookUrl: channels.asosUsNike, crawlerName: 'en_US-nike', locale: 'us' }),
-      //   crawlers.asos({ queryBrand: 'converse', limit: 8, webhookUrl: channels.asosUsConverse, crawlerName: 'en_US-converse', locale: 'us' }),
-      // ])
-      // makeCrawlerResult(asosUs)
+      const asosUs = await Promise.all([
+        crawlers.asos({ queryBrand: 'nike', limit: 8, webhookUrl: channels.asosUsNike, crawlerName: 'en_US-nike', locale: 'us' }),
+        // crawlers.asos({ queryBrand: 'converse', limit: 8, webhookUrl: channels.asosUsConverse, crawlerName: 'en_US-converse', locale: 'us' }),
+      ])
+      makeCrawlerResult(asosUs)
     }, 0)
   } catch (e) {
     await sendErrorMessage('system', e.message, channels.errorHandling)
