@@ -32,7 +32,9 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
     headless: isHeadless,
     args: [
       `--window-size=${vw},${vh}`,
-      `--lang=${locale.full},${locale.abbrv}`
+      `--lang=${locale.full},${locale.abbrv}`,
+      '--no-sandbox',
+      '--disable-setuid-sandbox'
     ],
   })
   try {

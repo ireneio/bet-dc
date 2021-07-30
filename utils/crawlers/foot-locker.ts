@@ -24,6 +24,8 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
     headless: isHeadless,
     args: [
       `--window-size=${vw},${vh}`,
+      '--no-sandbox',
+      '--disable-setuid-sandbox'
     ],
   })
   try {
