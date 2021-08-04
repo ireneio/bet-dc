@@ -44,7 +44,7 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
     })
 
     const query = queryBrand
-    const baseUrl = locale !== '' ?
+    const baseUrl = locale !== '' ? queryBrand === 'carhartt' ? `https://www.asos.com/${locale}/search/?currentpricerange=10-230&q=${query}&sort=freshness` :
       `https://www.asos.com/${locale}/search/?currentpricerange=10-230&q=${query}&sort=freshness&refine=attribute_1047:8606` :
       `https://www.asos.com/search/?currentpricerange=10-230&q=${query}&sort=freshness&refine=attribute_1047:8606`
 

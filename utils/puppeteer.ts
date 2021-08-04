@@ -39,6 +39,7 @@ async function runLogic() {
       const asosFr = await Promise.all([
         crawlers.asos({ queryBrand: 'nike', limit: 8, webhookUrl: channels.asosFrNike, crawlerName: 'fr-nike', locale: 'fr' }),
         crawlers.asos({ queryBrand: 'new+balance', limit: 8, webhookUrl: channels.asosFrNewBalance, crawlerName: 'fr-new-balance', locale: 'fr' }),
+        crawlers.asos({ queryBrand: 'carhartt', limit: 8, webhookUrl: channels.asosFrCarhartt, crawlerName: 'fr-carhartt', locale: 'fr' })
       ])
       makeCrawlerResult(asosFr)
     }, TIMEOUT_BETWEEN_BATCH * 2)
