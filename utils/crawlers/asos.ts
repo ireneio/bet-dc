@@ -112,12 +112,12 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
           ...form.getHeaders()
         }
       }
-      const response = await blob.post('/upload?uuid=snkr_crawler', form, config)
-      const { data: { data } } = response
-      const { blobData } = data
-      const blobUrl = blobData[0].accessUrl
-      list[i].img = blobUrl
-      // list[i].img = `${process.env.SELF_URL}/${imageName}${imageExt}`
+      // const response = await blob.post('/upload?uuid=snkr_crawler', form, config)
+      // const { data: { data } } = response
+      // const { blobData } = data
+      // const blobUrl = blobData[0].accessUrl
+      // list[i].img = blobUrl
+      list[i].img = `${process.env.SELF_URL}/${imageName}${imageExt}`
     }
 
     if (crawlerName.includes('en_US')) {
