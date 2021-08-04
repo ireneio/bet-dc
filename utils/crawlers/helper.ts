@@ -6,5 +6,9 @@ export interface CrawlerReturnObject {
 }
 
 export function filterDuplicate(newArr: CrawlerReturnObject[], oldArr: CrawlerReturnObject[]): CrawlerReturnObject[] {
-  return newArr.filter((newArrItem) => !oldArr.find(oldArrItem => oldArrItem.url === newArrItem.url))
+  return newArr.filter((newArrItem) => !oldArr.find(oldArrItem => serializeString(oldArrItem.title) === serializeString(newArrItem.title)))
+}
+
+function serializeString(str: string) {
+  return str.split(' ').join().toLowerCase()
 }
