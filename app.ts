@@ -9,6 +9,9 @@ import indexRouter from './routes/index'
 import { runPuppeteer, removeImage } from '~/utils/cron'
 import { removeDiskImages } from "./utils/system"
 
+console.log('[env] SELF_URL', process.env.SELF_URL)
+console.log()
+
 Promise.all([
   runPuppeteer(),
   removeImage()

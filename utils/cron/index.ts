@@ -4,7 +4,7 @@ import { removeDiskImages } from '../system'
 
 export async function runPuppeteer() {
   run()
-  cron.schedule('0 */6 * * *', async () => {
+  cron.schedule('0 * * * *', async () => {
     await run()
     console.log('[cron] puppeteer scripts ran.')
   })

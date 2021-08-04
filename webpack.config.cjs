@@ -1,5 +1,6 @@
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
+const Dotenv = require('dotenv-webpack')
 
 const config = {
   mode: 'development',
@@ -39,7 +40,14 @@ const config = {
     alias: {
       '~': path.resolve(__dirname, '')
     }
-  }
+  },
+  plugins: [
+    new Dotenv({
+      path: './.env',
+      safe: true,
+      allowEmptyValues: true
+    })
+  ]
 }
 
 module.exports = config
