@@ -1,13 +1,11 @@
 import axios, { AxiosRequestConfig, AxiosInstance } from 'axios'
 
 const axosConfig: AxiosRequestConfig = {
-  baseURL: 'https://www.asos.com/',
-  timeout: Number(process.env.NODE_APP_TIMEOUT_LIMIT) || 15000,
+  baseURL: `${process.env.BLOB_URL}`,
+  timeout: 60000,
   headers: {}
 }
 
-export const axos: AxiosInstance = axios.create({
+export const blob: AxiosInstance = axios.create({
   ...axosConfig
 })
-
-export default () => {}

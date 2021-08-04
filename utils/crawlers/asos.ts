@@ -6,6 +6,9 @@ import { CrawlerReturnObject, filterDuplicate } from './helper'
 import { brandLogo } from './constants'
 import { v4 as uuidv4 } from 'uuid'
 import sharp from 'sharp'
+import { blob } from '../api'
+import FormData from 'form-data'
+import fs from 'fs'
 
 interface CrawlerInput {
   queryBrand: string,
@@ -91,6 +94,7 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
       const _imageName = uuidv4()
       const imageExt = '.jpg'
       const imageName = _imageName.replaceAll('-', '')
+      const extractPath = `public/${imageName}${imageExt}`
 
       await page.goto(url)
       await page.screenshot({ path: `public/${_imageName}${imageExt}` })
@@ -100,8 +104,20 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
         left: 0,
         top: 50
       })
-      await extracted.toFile(`public/${imageName}${imageExt}`)
-      list[i].img = `${process.env.SELF_URL}/${imageName}${imageExt}`
+      await extracted.toFile(extractPath)
+      const form = new FormData()
+      form.append('blobs', fs.createReadStream(extractPath))
+      const config = {
+        headers: {
+          ...form.getHeaders()
+        }
+      }
+      const response = await blob.post('/upload?uuid=snkr_crawler', form, config)
+      const { data: { data } } = response
+      const { blobData } = data
+      const blobUrl = blobData[0].accessUrl
+      list[i].img = blobUrl
+      // list[i].img = `${process.env.SELF_URL}/${imageName}${imageExt}`
     }
 
     if (crawlerName.includes('en_US')) {

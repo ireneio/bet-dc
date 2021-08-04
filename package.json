@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "babel-node ./dist/app.bundle.js",
-    "dev": "cross-env SELF_URL=http://localhost:8081 npm-run-all --parallel build:dev watch",
+    "dev": "npm-run-all --parallel build:dev watch",
     "watch": "nodemon --exec babel-node ./dist/app.bundle.js",
     "build:dev": "webpack-cli --config webpack.config.cjs -w --progress --color",
     "build": "webpack --config webpack.config.cjs --progress --color",
@@ -25,6 +25,7 @@
     "cross-env": "^7.0.3",
     "discord-webhook-node": "^1.1.8",
     "express": "~4.16.1",
+    "form-data": "^4.0.0",
     "http": "0.0.1-security",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",

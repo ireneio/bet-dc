@@ -10,6 +10,7 @@ import { runPuppeteer, removeImage } from '~/utils/cron'
 import { removeDiskImages } from "./utils/system"
 
 console.log('[env] SELF_URL', process.env.SELF_URL)
+console.log('[env] BLOB_URL', process.env.BLOB_URL)
 console.log()
 
 Promise.all([
