@@ -2,7 +2,8 @@ import { channels, sendErrorMessage } from '~/utils/discord/webhook'
 import crawlers from '~/utils/crawlers/'
 
 // export const isHeadless = process.env.NODE_ENV === 'production'
-export const isHeadless = false
+// export const isHeadless = false
+// export const isHeadless = true
 
 const TIMEOUT_BETWEEN_BATCH = 30000
 
