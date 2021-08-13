@@ -50,8 +50,13 @@ export default async function crawler({ browser, queryBrand, limit, webhookUrl, 
       else request.continue()
     })
 
-    await page.waitForXPath('//a[@id="continue-country"]', { visible: true })
-    await page.click('a[id="continue-country"]')
+    await waitForTimeout(3000)
+
+    // await page.waitForXPath('//a[@id="continue-country"]', { visible: true })
+    const [btn] = await page.$x('//a[@id="continue-country"]')
+    if (btn) {
+      await page.click('a[id="continue-country"]')
+    }
 
     await page.evaluate(() => {
       window.scrollBy(0, window.innerHeight)
