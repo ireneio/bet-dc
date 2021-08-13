@@ -2,7 +2,6 @@ import { MessageBuilder } from 'discord-webhook-node'
 import { bulkSendMessage } from '../discord/webhook'
 import { CrawlerReturnObject, filterDuplicate, screenshotAndUpdateUrl, waitForTimeout } from './helper'
 import { brandLogo } from './constants'
-import { v4 as uuidv4 } from 'uuid'
 import * as cheerio from 'cheerio'
 
 interface CrawlerInput {

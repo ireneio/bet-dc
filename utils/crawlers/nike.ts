@@ -62,8 +62,6 @@ export default async function crawler({ browser, queryBrand, limit, webhookUrl, 
       window.scrollBy(0, window.innerHeight)
     })
 
-    // await waitForTimeout(6000)
-
     let list = await page.evaluate(() => {
       function pageLogic(element: Element) {
         const a = element.querySelector('.product-card__link-overlay')
