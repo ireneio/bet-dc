@@ -12,8 +12,16 @@ interface CrawlerInput {
   siteBrand: 'eastbay' | 'footlocker'
 }
 
-let previousFootLockerList: CrawlerReturnObject[] = []
-let previousEastBayList: CrawlerReturnObject[] = []
+let previousFootLockerNewbalance: CrawlerReturnObject[] = []
+let previousFootLockerNike: CrawlerReturnObject[] = []
+let previousFootLockerAdidas: CrawlerReturnObject[] = []
+let previousFootLockerConverse: CrawlerReturnObject[] = []
+
+let previousEastBayNewBalance: CrawlerReturnObject[] = []
+let previousEastBayNike: CrawlerReturnObject[] = []
+let previousEastBayAdidas: CrawlerReturnObject[] = []
+let previousEastBayConverse: CrawlerReturnObject[] = []
+let previousEastBayHoka: CrawlerReturnObject[] = []
 
 const vh = 1080
 const vw = 1920
@@ -68,13 +76,45 @@ export default async function crawler({ browser, queryBrand, limit, webhookUrl, 
     list = list.slice(0, limit)
 
     if (siteBrand === 'footlocker') {
-      const _list = filterDuplicate(list, previousFootLockerList)
-      previousFootLockerList = [...list]
-      list = _list
+      if (crawlerName === 'new-balance') {
+        const _list = filterDuplicate(list, previousFootLockerNewbalance)
+        previousFootLockerNewbalance = [...list]
+        list = _list
+      } else if (crawlerName === 'nike') {
+        const _list = filterDuplicate(list, previousFootLockerNike)
+        previousFootLockerNike = [...list]
+        list = _list
+      } else if (crawlerName === 'adidas') {
+        const _list = filterDuplicate(list, previousFootLockerAdidas)
+        previousFootLockerAdidas = [...list]
+        list = _list
+      } else if (crawlerName === 'converse') {
+        const _list = filterDuplicate(list, previousFootLockerConverse)
+        previousFootLockerConverse = [...list]
+        list = _list
+      }
     } else if (siteBrand === 'eastbay') {
-      const _list = filterDuplicate(list, previousEastBayList)
-      previousEastBayList = [...list]
-      list = _list
+      if (crawlerName === 'new-balance') {
+        const _list = filterDuplicate(list, previousEastBayNewBalance)
+        previousEastBayNewBalance = [...list]
+        list = _list
+      } else if (crawlerName === 'nike') {
+        const _list = filterDuplicate(list, previousEastBayNike)
+        previousEastBayNike = [...list]
+        list = _list
+      } else if (crawlerName === 'adidas') {
+        const _list = filterDuplicate(list, previousEastBayAdidas)
+        previousEastBayAdidas = [...list]
+        list = _list
+      } else if (crawlerName === 'converse') {
+        const _list = filterDuplicate(list, previousEastBayConverse)
+        previousEastBayConverse = [...list]
+        list = _list
+      } else if (crawlerName === 'hoka-one-one') {
+        const _list = filterDuplicate(list, previousEastBayHoka)
+        previousFootLockerConverse = [...list]
+        list = _list
+      }
     }
 
     console.log(list)
