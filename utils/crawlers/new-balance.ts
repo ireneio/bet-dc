@@ -86,26 +86,27 @@ export default async function crawler({ browser, queryBrand, limit, webhookUrl, 
     previousEnList = [...list]
     list = _list
 
-    console.log(list)
-
-    const messageList: MessageBuilder[] = []
-
-    list.forEach((item: any, index: number) => {
-      const { url, price, title, img } = item
-      const authorText = `${siteBrand}_${queryBrand}`.toUpperCase()
-      const embed = new MessageBuilder()
-        .setTitle(title)
-        .setAuthor(`${authorText} [Search: New NB Gear]`, brandLogo.newBalance, baseUrl)
-        // @ts-ignore
-        .setURL(`${host}${url}`)
-        .addField('價格', price, true)
-        .setFooter(`最新 ${index + 1}/${limit} 筆`)
-        .setImage(img)
-        .setTimestamp()
-      messageList.push(embed)
-    })
-
-    await bulkSendMessage(messageList, webhookUrl)
+    if (list.length > 0) {
+      console.log(list)
+      const messageList: MessageBuilder[] = []
+      list.forEach((item: any, index: number) => {
+        const { url, price, title, img } = item
+        const authorText = `${siteBrand}_${queryBrand}`.toUpperCase()
+        const embed = new MessageBuilder()
+          .setTitle(title)
+          .setAuthor(`${authorText} [Search: New NB Gear]`, brandLogo.newBalance, baseUrl)
+          // @ts-ignore
+          .setURL(`${host}${url}`)
+          .addField('價格', price, true)
+          .setFooter(`最新 ${index + 1}/${limit} 筆`)
+          .setImage(img)
+          .setTimestamp()
+        messageList.push(embed)
+      })
+      await bulkSendMessage(messageList, webhookUrl)
+    } else {
+      console.log(`${siteBrand}-${crawlerName}: No New Drops`)
+    }
 
     await page.close()
 

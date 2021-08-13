@@ -96,29 +96,29 @@ export default async function crawler({ browser, queryBrand, limit, webhookUrl, 
       list = _list
     }
 
-    await screenshotAndUpdateUrl(page, list)
-
-    console.log(list)
-
-    const messageList: MessageBuilder[] = []
-
-    list.forEach((item: any, index: number) => {
-      const { url, price, title, img } = item
-      const authorText = `${siteBrand}_${queryBrand}`.toUpperCase()
-      const _img = img === 'undefined' ? imgDefault : img
-      const embed = new MessageBuilder()
-        .setTitle(title)
-        .setAuthor(`${authorText} [Search: New Shoes]`, brandLogo.nike, baseUrl)
-        // @ts-ignore
-        .setURL(url)
-        .addField('價格', price, true)
-        .setFooter(`最新 ${index + 1}/${limit} 筆`)
-        .setImage(_img)
-        .setTimestamp()
-      messageList.push(embed)
-    })
-
-    await bulkSendMessage(messageList, webhookUrl)
+    if (list.length > 0) {
+      console.log(list)
+      await screenshotAndUpdateUrl(page, list)
+      const messageList: MessageBuilder[] = []
+      list.forEach((item: any, index: number) => {
+        const { url, price, title, img } = item
+        const authorText = `${siteBrand}_${queryBrand}`.toUpperCase()
+        const _img = img === 'undefined' ? imgDefault : img
+        const embed = new MessageBuilder()
+          .setTitle(title)
+          .setAuthor(`${authorText} [Search: New Shoes]`, brandLogo.nike, baseUrl)
+          // @ts-ignore
+          .setURL(url)
+          .addField('價格', price, true)
+          .setFooter(`最新 ${index + 1}/${limit} 筆`)
+          .setImage(_img)
+          .setTimestamp()
+        messageList.push(embed)
+      })
+      await bulkSendMessage(messageList, webhookUrl)
+    } else {
+      console.log(`${siteBrand}-${crawlerName}: No New Drops`)
+    }
 
     await page.close()
 

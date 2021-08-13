@@ -8,7 +8,7 @@ export async function runPuppeteer() {
     await run()
     console.log('[cron] puppeteer scripts ran.')
   })
-  console.log('[cron] runPuppeteer on 0 */6 * * * (every 6 hours)')
+  console.log('[cron] runPuppeteer on 0 * * * * (every hour)')
 }
 
 // every sunday
