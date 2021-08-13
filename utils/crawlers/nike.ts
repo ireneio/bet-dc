@@ -15,11 +15,11 @@ interface CrawlerInput {
 let previousEnList: CrawlerReturnObject[] = []
 let previousJpList: CrawlerReturnObject[] = []
 
-// const vh = 812
-// const vw = 375
+const vh = 812
+const vw = 375
 
-const vh = 1080
-const vw = 1920
+// const vh = 1080
+// const vw = 1920
 
 export default async function crawler({ browser, queryBrand, limit, webhookUrl, crawlerName, siteBrand }: CrawlerInput): Promise<{ status: boolean, identifier: string, message: string }> {
   const locale = {

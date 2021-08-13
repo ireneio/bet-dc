@@ -28,6 +28,7 @@ export async function screenshotAndUpdateUrl(page: any, list: CrawlerReturnObjec
     const extractPath = `public/${imageName}${imageExt}`
 
     await page.goto(url)
+    await waitForTimeout(2000)
     await page.screenshot({ path: extractPath })
     list[i].img = `${process.env.SELF_URL}/${imageName}${imageExt}`
   }
