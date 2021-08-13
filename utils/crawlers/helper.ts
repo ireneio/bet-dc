@@ -8,7 +8,12 @@ export interface CrawlerReturnObject {
 }
 
 export function filterDuplicate(newArr: CrawlerReturnObject[], oldArr: CrawlerReturnObject[]): CrawlerReturnObject[] {
-  return newArr.filter((newArrItem) => !oldArr.find(oldArrItem => serializeString(oldArrItem.title) === serializeString(newArrItem.title)))
+  // return newArr.filter((newArrItem) => !oldArr.find(oldArrItem => serializeString(oldArrItem.title) === serializeString(newArrItem.title)))
+
+  return newArr.filter((newArrItem) => {
+    const find = oldArr.find(oldArrItem => oldArrItem.title === newArrItem.title && oldArrItem.price === newArrItem.price)
+    return !find
+  })
 }
 
 function serializeString(str: string) {
