@@ -240,6 +240,6 @@ async function mainRunInBulk() {
 }
 
 export default async function run() {
-  // await mainRunSingle()
-  await mainRunInBulk()
+  await mainRunSingle()
+  // await mainRunInBulk()
 }
