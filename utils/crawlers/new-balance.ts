@@ -1,11 +1,10 @@
 import { MessageBuilder } from 'discord-webhook-node'
 import { bulkSendMessage } from '../discord/webhook'
-import puppeteer from 'puppeteer'
-import { isHeadless } from '../puppeteer'
-import { CrawlerReturnObject, filterDuplicate } from './helper'
+import { CrawlerReturnObject, filterDuplicate, waitForTimeout } from './helper'
 import { brandLogo } from './constants'
 
 interface CrawlerInput {
+  browser: any,
   queryBrand: 'us',
   limit: number,
   webhookUrl: string,
@@ -18,17 +17,9 @@ let previousEnList: CrawlerReturnObject[] = []
 const vh = 812
 const vw = 375
 
-export default async function crawler({ queryBrand, limit, webhookUrl, crawlerName, siteBrand }: CrawlerInput): Promise<{ status: boolean, identifier: string, message: string }> {
-  const browser = await puppeteer.launch({
-    headless: isHeadless,
-    args: [
-      `--window-size=${vw},${vh}`,
-      '--no-sandbox',
-      '--disable-setuid-sandbox'
-    ],
-  })
+export default async function crawler({ browser, queryBrand, limit, webhookUrl, crawlerName, siteBrand }: CrawlerInput): Promise<{ status: boolean, identifier: string, message: string }> {
   try {
-    const [page] = await browser.pages()
+    const page = await browser.newPage()
 
     await page.setViewport({
       width: vw,
@@ -54,13 +45,19 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
     await page.goto(baseUrl, { waitUntil: 'networkidle0' })
 
     await page.setRequestInterception(true)
-    page.on('request', (request) => {
+    page.on('request', (request: any) => {
       if (request.resourceType() === 'image') request.abort()
       else request.continue()
     })
 
     await page.waitForXPath('//a[@id="continue-country"]', { visible: true })
     await page.click('a[id="continue-country"]')
+
+    await page.evaluate(() => {
+      window.scrollBy(0, window.innerHeight)
+    })
+
+    await waitForTimeout(3000)
 
     let list = await page.evaluate(() => {
       function pageLogic(element: Element) {
@@ -73,7 +70,7 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
         return {
           title,
           url,
-          price: price?.replaceAll('\n', ''),
+          price,
           img
         }
       }
@@ -111,11 +108,11 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
 
     await bulkSendMessage(messageList, webhookUrl)
 
+    await page.close()
+
     return { status: true, identifier: `${siteBrand}-${crawlerName}`, message: 'success' }
   } catch (e) {
     console.log('ERROR:', e.message)
     return { status: false, identifier: `${siteBrand}-${crawlerName}`, message: e.message }
-  } finally {
-    await browser.close()
   }
 }

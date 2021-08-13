@@ -1,7 +1,7 @@
-import express, { Application, Request, Response } from "express"
+import express, { Application, Request, Response } from 'express'
 import * as path from 'path'
-// import cookieParser from 'cookie-parser'
 import logger from 'morgan'
+import cookieParser from 'cookie-parser'
 // import cors from 'cors'
 
 import indexRouter from './routes/index'
@@ -10,13 +10,7 @@ import { runPuppeteer, removeImage } from '~/utils/cron'
 import { removeDiskImages } from "./utils/system"
 
 console.log('[env] SELF_URL', process.env.SELF_URL)
-console.log('[env] BLOB_URL', process.env.BLOB_URL)
 console.log()
-
-Promise.all([
-  runPuppeteer(),
-  removeImage()
-])
 
 // Init Express
 const app: Application = express()
@@ -30,9 +24,9 @@ const app: Application = express()
 // app.use(cors(corsOptions))
 
 app.use(logger('dev'))
-// app.use(express.json())
-// app.use(express.urlencoded({ extended: false }))
-// app.use(cookieParser())
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(cookieParser())
 app.use(express.static(path.join(__dirname, '..', 'public')))
 
 app.use('/', indexRouter)
@@ -43,5 +37,10 @@ app.use('*', function (req: Request, res: Response, next: Function): void {
 })
 
 removeDiskImages()
+
+Promise.all([
+  runPuppeteer(),
+  removeImage()
+])
 
 export default app

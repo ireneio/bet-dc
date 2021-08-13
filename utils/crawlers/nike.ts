@@ -1,11 +1,10 @@
 import { MessageBuilder } from 'discord-webhook-node'
 import { bulkSendMessage } from '../discord/webhook'
-import puppeteer from 'puppeteer'
-import { isHeadless } from '../puppeteer'
-import { CrawlerReturnObject, filterDuplicate } from './helper'
+import { CrawlerReturnObject, filterDuplicate, waitForTimeout } from './helper'
 import { brandLogo, imgDefault } from './constants'
 
 interface CrawlerInput {
+  browser: any,
   queryBrand: 'jp' | 'us',
   limit: number,
   webhookUrl: string,
@@ -22,23 +21,14 @@ let previousJpList: CrawlerReturnObject[] = []
 const vh = 1080
 const vw = 1920
 
-export default async function crawler({ queryBrand, limit, webhookUrl, crawlerName, siteBrand }: CrawlerInput): Promise<{ status: boolean, identifier: string, message: string }> {
+export default async function crawler({ browser, queryBrand, limit, webhookUrl, crawlerName, siteBrand }: CrawlerInput): Promise<{ status: boolean, identifier: string, message: string }> {
   const locale = {
     full: queryBrand === 'jp' ? 'ja-JP' : 'en-US',
     abbrv: queryBrand === 'jp' ? 'ja' : 'en',
   }
 
-  const browser = await puppeteer.launch({
-    headless: isHeadless,
-    args: [
-      `--window-size=${vw},${vh}`,
-      `--lang=${locale.full},${locale.abbrv}`,
-      '--no-sandbox',
-      '--disable-setuid-sandbox'
-    ],
-  })
   try {
-    const [page] = await browser.pages()
+    const page = await browser.newPage()
 
     await page.setViewport({
       width: vw,
@@ -72,7 +62,9 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
       window.scrollBy(0, window.innerHeight)
     })
 
-    await page.waitForTimeout(3000)
+    // await page.waitForTimeout(3000)
+
+    await waitForTimeout(3000)
 
     let list = await page.evaluate(() => {
       function pageLogic(element: Element) {
@@ -130,11 +122,11 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
 
     await bulkSendMessage(messageList, webhookUrl)
 
+    await page.close()
+
     return { status: true, identifier: `${siteBrand}-${crawlerName}`, message: 'success' }
   } catch (e) {
     console.log('ERROR:', e.message)
     return { status: false, identifier: `${siteBrand}-${crawlerName}`, message: e.message }
-  } finally {
-    await browser.close()
   }
 }

@@ -1,11 +1,10 @@
 import { MessageBuilder } from 'discord-webhook-node'
 import { bulkSendMessage } from '../discord/webhook'
-import puppeteer from 'puppeteer'
-import { isHeadless } from '../puppeteer'
 import { CrawlerReturnObject, filterDuplicate } from './helper'
 import { brandLogo } from './constants'
 
 interface CrawlerInput {
+  browser: any,
   queryBrand: string,
   limit: number,
   webhookUrl: string,
@@ -19,17 +18,9 @@ let previousEastBayList: CrawlerReturnObject[] = []
 const vh = 1080
 const vw = 1920
 
-export default async function crawler({ queryBrand, limit, webhookUrl, crawlerName, siteBrand }: CrawlerInput): Promise<{ status: boolean, identifier: string, message: string }> {
-  const browser = await puppeteer.launch({
-    headless: isHeadless,
-    args: [
-      `--window-size=${vw},${vh}`,
-      '--no-sandbox',
-      '--disable-setuid-sandbox'
-    ],
-  })
+export default async function crawler({ browser, queryBrand, limit, webhookUrl, crawlerName, siteBrand }: CrawlerInput): Promise<{ status: boolean, identifier: string, message: string }> {
   try {
-    const [page] = await browser.pages()
+    const page = await browser.newPage()
 
     await page.setViewport({
       width: vw,
@@ -40,16 +31,18 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
     const query = queryBrand.replaceAll('-', '+')
     const baseUrl = `${host}/category/brands/${queryBrand}.html?query=${encodeURIComponent(query)}%3AnewArrivals%3Aproducttype%3AShoes&sort=newArrivals&currentPage=0`
 
-    await page.goto(baseUrl, { waitUntil: 'networkidle0' })
+    // await page.goto(baseUrl, { waitUntil: 'networkidle0' })
+
+    await page.goto(baseUrl)
 
     await page.setRequestInterception(true)
-    page.on('request', (request) => {
+    page.on('request', (request: any) => {
       if (request.resourceType() === 'image') request.abort()
       else request.continue()
     })
 
-    await page.waitForXPath('//button[@name="bluecoreCloseButton"]', { visible: true })
-    await page.click('button[name="bluecoreCloseButton"]')
+    // await page.waitForXPath('//button[@name="bluecoreCloseButton"]', { visible: true })
+    // await page.click('button[name="bluecoreCloseButton"]')
 
     let list = await page.evaluate(() => {
       function pageLogic(element: Element) {
@@ -105,11 +98,11 @@ export default async function crawler({ queryBrand, limit, webhookUrl, crawlerNa
 
     await bulkSendMessage(messageList, webhookUrl)
 
+    await page.close()
+
     return { status: true, identifier: `${siteBrand}-${crawlerName}`, message: 'success' }
   } catch (e) {
     console.log('ERROR:', e.message)
     return { status: false, identifier: `${siteBrand}-${crawlerName}`, message: e.message }
-  } finally {
-    await browser.close()
   }
 }

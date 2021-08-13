@@ -12,3 +12,7 @@ export function filterDuplicate(newArr: CrawlerReturnObject[], oldArr: CrawlerRe
 function serializeString(str: string) {
   return str.split(' ').join().toLowerCase()
 }
+
+export async function waitForTimeout(sleepTime: number) {
+  await new Promise((resolve) => { setTimeout(resolve, sleepTime) })
+}
