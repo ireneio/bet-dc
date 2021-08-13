@@ -2,7 +2,7 @@ import { channels, sendErrorMessage } from '~/utils/discord/webhook'
 import crawlers from '~/utils/crawlers/'
 
 // export const isHeadless = process.env.NODE_ENV === 'production'
-// export const isHeadless = false
+export const isHeadless = false
 // export const isHeadless = true
 
 const TIMEOUT_BETWEEN_BATCH = 30000
@@ -81,7 +81,7 @@ async function runLogic() {
       const footLocker = await Promise.all([
         crawlers.footLocker({ queryBrand: 'adidas', limit: 8, webhookUrl: channels.footLockerAdidas, crawlerName: 'adidas', siteBrand: 'footlocker' }),
         crawlers.footLocker({ queryBrand: 'converse', limit: 8, webhookUrl: channels.footLockerConverse, crawlerName: 'converse', siteBrand: 'footlocker' }),
-        crawlers.footLocker({ queryBrand: 'hoka-one-one', limit: 8, webhookUrl: channels.footLockerHokaOneOne, crawlerName: 'hoka-one-one', siteBrand: 'footlocker' })
+        // crawlers.footLocker({ queryBrand: 'hoka-one-one', limit: 8, webhookUrl: channels.footLockerHokaOneOne, crawlerName: 'hoka-one-one', siteBrand: 'footlocker' })
       ])
       makeCrawlerResult(footLocker)
     }, TIMEOUT_BETWEEN_BATCH * 7)
@@ -121,20 +121,7 @@ async function runLogic() {
     setTimeout(async () => {
       const afewEn = await crawlers.afew({ queryBrand: 'en', limit: 8, webhookUrl: channels.afewEn, crawlerName: 'en', siteBrand: 'afew' })
       makeCrawlerResult([afewEn])
-    }, TIMEOUT_BETWEEN_BATCH * 12)
-
-    // setTimeout(async () => {
-    //   const nikeUs = await crawlers.nike({ queryBrand: 'us', limit: 8, webhookUrl: channels.nikeUs, crawlerName: 'us', siteBrand: 'nike' })
-    //   makeCrawlerResult([nikeUs])
-
-    //   const nikeJp = await crawlers.nike({ queryBrand: 'jp', limit: 8, webhookUrl: channels.nikeJp, crawlerName: 'jp', siteBrand: 'nike' })
-    //   makeCrawlerResult([nikeJp])
-
-    //   const asosUs = await Promise.all([
-    //     crawlers.asos({ queryBrand: 'nike', limit: 8, webhookUrl: channels.asosUsNike, crawlerName: 'en_US-nike', locale: 'us' }),
-    //   ])
-    //   makeCrawlerResult(asosUs)
-    // }, 0)
+    }, TIMEOUT_BETWEEN_BATCH * 13)
   } catch (e) {
     await sendErrorMessage('system', e.message, channels.errorHandling)
   }
