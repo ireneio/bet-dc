@@ -64,7 +64,7 @@ export default async function crawler({ browser, queryBrand, limit, webhookUrl, 
 
     // await page.waitForTimeout(3000)
 
-    await waitForTimeout(3000)
+    await waitForTimeout(6000)
 
     let list = await page.evaluate(() => {
       function pageLogic(element: Element) {

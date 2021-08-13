@@ -32,6 +32,7 @@ async function runLogic() {
       ],
     })
 
+    // nike jp
     proc = await crawlers.nike({ browser, queryBrand: 'jp', limit: 8, webhookUrl: channels.nikeJp, crawlerName: 'jp', siteBrand: 'nike' })
     makeCrawlerResult([proc])
 
@@ -48,12 +49,15 @@ async function runLogic() {
       ],
     })
 
+    // nike us
     proc = await crawlers.nike({ browser, queryBrand: 'us', limit: 8, webhookUrl: channels.nikeUs, crawlerName: 'us', siteBrand: 'nike' })
     makeCrawlerResult([proc])
 
+    // nb
     proc = await crawlers.newBalance({ browser, queryBrand: 'us', limit: 8, webhookUrl: channels.newBalanceUs, crawlerName: 'us', siteBrand: 'newbalance' })
     makeCrawlerResult([proc])
 
+    // asos us
     proc = await crawlers.asos({ browser, queryBrand: 'nike', limit: 8, webhookUrl: channels.asosUsNike, crawlerName: 'en_US-nike', locale: 'us' }),
     makeCrawlerResult([proc])
 
@@ -69,6 +73,7 @@ async function runLogic() {
     proc = await crawlers.asos({ browser, queryBrand: 'the+north+face', limit: 8, webhookUrl: channels.asosUsNorthFace, crawlerName: 'en_US-the-north-face', locale: 'us' }),
     makeCrawlerResult([proc])
 
+    // asos fr
     proc = await crawlers.asos({ browser, queryBrand: 'nike', limit: 8, webhookUrl: channels.asosFrNike, crawlerName: 'fr-nike', locale: 'fr' }),
     makeCrawlerResult([proc])
 
@@ -81,6 +86,7 @@ async function runLogic() {
     proc = await crawlers.asos({ browser, queryBrand: 'converse', limit: 8, webhookUrl: channels.asosFrConverse, crawlerName: 'fr-converse', locale: 'fr' }),
     makeCrawlerResult([proc])
 
+    // asos en
     proc = await crawlers.asos({ browser, queryBrand: 'nike', limit: 8, webhookUrl: channels.asosEnNike, crawlerName: 'en_EN-nike', locale: '' }),
     makeCrawlerResult([proc])
 
@@ -93,22 +99,28 @@ async function runLogic() {
     proc = await crawlers.asos({ browser, queryBrand: 'adidas', limit: 8, webhookUrl: channels.asosEnAdidas, crawlerName: 'en_EN-adidas', locale: '' })
     makeCrawlerResult([proc])
 
+    // afrew
     proc = await crawlers.afew({ browser, queryBrand: 'en', limit: 8, webhookUrl: channels.afewEn, crawlerName: 'en', siteBrand: 'afew' })
     makeCrawlerResult([proc])
 
+    // footlocker
     proc = await crawlers.footLocker({ browser, queryBrand: 'new-balance', limit: 8, webhookUrl: channels.footLockerNewBalance, crawlerName: 'new-balance', siteBrand: 'footlocker' })
     makeCrawlerResult([proc])
 
     proc = await crawlers.footLocker({ browser, queryBrand: 'nike', limit: 8, webhookUrl: channels.footLockerNike, crawlerName: 'nike', siteBrand: 'footlocker' })
     makeCrawlerResult([proc])
 
-    proc = await crawlers.footLocker({ browser, queryBrand: 'adidas', limit: 8, webhookUrl: channels.eastBayAdidas, crawlerName: 'adidas', siteBrand: 'eastbay' }),
+    proc = await crawlers.footLocker({ browser, queryBrand: 'adidas', limit: 8, webhookUrl: channels.footLockerAdidas, crawlerName: 'adidas', siteBrand: 'footlocker' }),
     makeCrawlerResult([proc])
 
-    proc = await crawlers.footLocker({ browser, queryBrand: 'converse', limit: 8, webhookUrl: channels.eastBayConverse, crawlerName: 'converse', siteBrand: 'eastbay' }),
+    proc = await crawlers.footLocker({ browser, queryBrand: 'converse', limit: 8, webhookUrl: channels.footLockerConverse, crawlerName: 'converse', siteBrand: 'footlocker' }),
     makeCrawlerResult([proc])
 
-    proc = await crawlers.footLocker({ browser, queryBrand: 'hoka-one-one', limit: 8, webhookUrl: channels.eastBayHokaOneOne, crawlerName: 'hoka-one-one', siteBrand: 'eastbay' })
+    // eastbay
+    proc = await crawlers.footLocker({ browser, queryBrand: 'new-balance', limit: 8, webhookUrl: channels.eastBayNewBalance, crawlerName: 'new-balance', siteBrand: 'eastbay' })
+    makeCrawlerResult([proc])
+
+    proc = await crawlers.footLocker({ browser, queryBrand: 'nike', limit: 8, webhookUrl: channels.eastBayNike, crawlerName: 'nike', siteBrand: 'eastbay' })
     makeCrawlerResult([proc])
 
     proc = await crawlers.footLocker({ browser, queryBrand: 'adidas', limit: 8, webhookUrl: channels.eastBayAdidas, crawlerName: 'adidas', siteBrand: 'eastbay' }),
