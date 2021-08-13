@@ -2,6 +2,7 @@ import { channels, sendErrorMessage } from '~/utils/discord/webhook'
 import crawlers from '~/utils/crawlers/'
 import puppeteer from 'puppeteer-extra'
 import StealthPlugin from 'puppeteer-extra-plugin-stealth'
+import { waitForTimeout } from './crawlers/helper'
 
 puppeteer.use(StealthPlugin())
 
@@ -18,16 +19,40 @@ async function makeCrawlerResult(result: { status: boolean, identifier: string }
 }
 
 async function runLogic() {
-  const browser = await puppeteer.launch({
-    headless: isHeadless,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox'
-    ],
-  })
+  let proc
+  let browser
 
   try {
-    let proc
+    browser = await puppeteer.launch({
+      headless: isHeadless,
+      args: [
+        '--no-sandbox',
+        '--lang=ja-JP,ja',
+        '--disable-setuid-sandbox'
+      ],
+    })
+
+    proc = await crawlers.nike({ browser, queryBrand: 'jp', limit: 8, webhookUrl: channels.nikeJp, crawlerName: 'jp', siteBrand: 'nike' })
+    makeCrawlerResult([proc])
+
+    await browser.close()
+
+    waitForTimeout(3000)
+
+    browser = await puppeteer.launch({
+      headless: isHeadless,
+      args: [
+        '--no-sandbox',
+        '--lang=en-US',
+        '--disable-setuid-sandbox'
+      ],
+    })
+
+    proc = await crawlers.nike({ browser, queryBrand: 'us', limit: 8, webhookUrl: channels.nikeUs, crawlerName: 'us', siteBrand: 'nike' })
+    makeCrawlerResult([proc])
+
+    proc = await crawlers.newBalance({ browser, queryBrand: 'us', limit: 8, webhookUrl: channels.newBalanceUs, crawlerName: 'us', siteBrand: 'newbalance' })
+    makeCrawlerResult([proc])
 
     proc = await crawlers.asos({ browser, queryBrand: 'nike', limit: 8, webhookUrl: channels.asosUsNike, crawlerName: 'en_US-nike', locale: 'us' }),
     makeCrawlerResult([proc])
@@ -68,15 +93,6 @@ async function runLogic() {
     proc = await crawlers.asos({ browser, queryBrand: 'adidas', limit: 8, webhookUrl: channels.asosEnAdidas, crawlerName: 'en_EN-adidas', locale: '' })
     makeCrawlerResult([proc])
 
-    proc = await crawlers.newBalance({ browser, queryBrand: 'us', limit: 8, webhookUrl: channels.newBalanceUs, crawlerName: 'us', siteBrand: 'newbalance' })
-    makeCrawlerResult([proc])
-
-    proc = await crawlers.nike({ browser, queryBrand: 'us', limit: 8, webhookUrl: channels.nikeUs, crawlerName: 'us', siteBrand: 'nike' })
-    makeCrawlerResult([proc])
-
-    proc = await crawlers.nike({ browser, queryBrand: 'jp', limit: 8, webhookUrl: channels.nikeJp, crawlerName: 'jp', siteBrand: 'nike' })
-    makeCrawlerResult([proc])
-
     proc = await crawlers.afew({ browser, queryBrand: 'en', limit: 8, webhookUrl: channels.afewEn, crawlerName: 'en', siteBrand: 'afew' })
     makeCrawlerResult([proc])
 
@@ -104,11 +120,13 @@ async function runLogic() {
     proc = await crawlers.footLocker({ browser, queryBrand: 'hoka-one-one', limit: 8, webhookUrl: channels.eastBayHokaOneOne, crawlerName: 'hoka-one-one', siteBrand: 'eastbay' })
     makeCrawlerResult([proc])
 
+    await browser.close()
+
   } catch (e) {
     await sendErrorMessage('system', e.message, channels.errorHandling)
   } finally {
-    await browser.close()
-    console.log('[puppeteer] browser closed')
+    // await browser.close()
+    console.log('[puppeteer] iteration done')
   }
 }
 
