@@ -1,6 +1,6 @@
 import { MessageBuilder } from 'discord-webhook-node'
 import { bulkSendMessage } from '../discord/webhook'
-import { CrawlerReturnObject, filterDuplicate, waitForTimeout } from './helper'
+import { CrawlerReturnObject, filterDuplicate, screenshotAndUpdateUrl, waitForTimeout } from './helper'
 import { brandLogo } from './constants'
 import { v4 as uuidv4 } from 'uuid'
 import * as cheerio from 'cheerio'
@@ -14,9 +14,21 @@ interface CrawlerInput {
   locale: string
 }
 
-let previousUsList: CrawlerReturnObject[] = []
-let previousFrList: CrawlerReturnObject[] = []
-let previousEnList: CrawlerReturnObject[] = []
+let previousUsNike: CrawlerReturnObject[] = []
+let previousUsConverse: CrawlerReturnObject[] = []
+let previousUsNewBalance: CrawlerReturnObject[] = []
+let previousUsVans: CrawlerReturnObject[] = []
+let previousUsTheNorthFace: CrawlerReturnObject[] = []
+
+let previousFrNike: CrawlerReturnObject[] = []
+let previousFrNewBalance: CrawlerReturnObject[] = []
+let previousFrCarhartt: CrawlerReturnObject[] = []
+let previousFrConverse: CrawlerReturnObject[] = []
+
+let previousEnNike: CrawlerReturnObject[] = []
+let previousEnNewBalance: CrawlerReturnObject[] = []
+let previousEnAdidas: CrawlerReturnObject[] = []
+let previousEnConverse: CrawlerReturnObject[] = []
 
 const vh = 812
 const vw = 375
@@ -66,51 +78,62 @@ export default async function crawler({ browser, queryBrand, limit, webhookUrl, 
       }
     })
 
-    if (crawlerName.includes('en_US')) {
-      const _list = filterDuplicate(list, previousUsList)
-      previousUsList = [...list]
+    // filter dupes
+    if (crawlerName === 'en_US-nike') {
+      const _list = filterDuplicate(list, previousUsNike)
+      previousUsNike = [...list]
       list = _list
-    } else if (crawlerName.includes('fr')) {
-      const _list = filterDuplicate(list, previousFrList)
-      previousFrList = [...list]
+    } else if (crawlerName === 'en_US-converse') {
+      const _list = filterDuplicate(list, previousUsConverse)
+      previousUsConverse = [...list]
       list = _list
-    } else if (crawlerName.includes('en_EN')) {
-      const _list = filterDuplicate(list, previousEnList)
-      previousEnList = [...list]
+    } else if (crawlerName === 'en_US-new-balance') {
+      const _list = filterDuplicate(list, previousUsNewBalance)
+      previousUsNewBalance = [...list]
+      list = _list
+    } else if (crawlerName === 'en_US-vans') {
+      const _list = filterDuplicate(list, previousUsVans)
+      previousUsVans = [...list]
+      list = _list
+    } else if (crawlerName === 'en_US-the-north-face') {
+      const _list = filterDuplicate(list, previousUsTheNorthFace)
+      previousUsTheNorthFace = [...list]
+      list = _list
+    } else if (crawlerName === 'fr-nike') {
+      const _list = filterDuplicate(list, previousFrNike)
+      previousFrNike = [...list]
+      list = _list
+    } else if (crawlerName === 'fr-new-balance') {
+      const _list = filterDuplicate(list, previousFrNewBalance)
+      previousFrNewBalance = [...list]
+      list = _list
+    } else if (crawlerName === 'fr-carhartt') {
+      const _list = filterDuplicate(list, previousFrCarhartt)
+      previousFrCarhartt = [...list]
+      list = _list
+    } else if (crawlerName === 'fr-converse') {
+      const _list = filterDuplicate(list, previousFrConverse)
+      previousFrConverse = [...list]
+      list = _list
+    } else if (crawlerName === 'en_EN-nike') {
+      const _list = filterDuplicate(list, previousEnNike)
+      previousEnNike = [...list]
+      list = _list
+    } else if (crawlerName === 'en_EN-new-balance') {
+      const _list = filterDuplicate(list, previousEnNewBalance)
+      previousEnNewBalance = [...list]
+      list = _list
+    } else if (crawlerName === 'en_EN-converse') {
+      const _list = filterDuplicate(list, previousEnConverse)
+      previousEnConverse = [...list]
+      list = _list
+    } else if (crawlerName === 'en_EN-adidas') {
+      const _list = filterDuplicate(list, previousEnAdidas)
+      previousEnAdidas = [...list]
       list = _list
     }
 
-    // get and extract images
-    for (let i = 0; i < list.length; i++) {
-      const url = list[i].url
-      const _imageName = uuidv4()
-      const imageExt = '.jpg'
-      const imageName = _imageName.replaceAll('-', '')
-      const extractPath = `public/${imageName}${imageExt}`
-
-      await page.goto(url)
-      await page.screenshot({ path: extractPath })
-      // const extracted = await sharp(`public/${_imageName}${imageExt}`).extract({
-      //   width: vw,
-      //   height: parseInt((vh * 0.6).toString()),
-      //   left: 0,
-      //   top: 50
-      // })
-      // await extracted.toFile(extractPath)
-      // const form = new FormData()
-      // form.append('blobs', fs.createReadStream(extractPath))
-      // const config = {
-      //   headers: {
-      //     ...form.getHeaders()
-      //   }
-      // }
-      // const response = await blob.post('/upload?uuid=snkr_crawler', form, config)
-      // const { data: { data } } = response
-      // const { blobData } = data
-      // const blobUrl = blobData[0].accessUrl
-      // list[i].img = blobUrl
-      list[i].img = `${process.env.SELF_URL}/${imageName}${imageExt}`
-    }
+    await screenshotAndUpdateUrl(page, list)
 
     console.log(list)
 

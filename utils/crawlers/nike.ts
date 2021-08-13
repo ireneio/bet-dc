@@ -1,6 +1,6 @@
 import { MessageBuilder } from 'discord-webhook-node'
 import { bulkSendMessage } from '../discord/webhook'
-import { CrawlerReturnObject, filterDuplicate, waitForTimeout } from './helper'
+import { CrawlerReturnObject, filterDuplicate, screenshotAndUpdateUrl, waitForTimeout } from './helper'
 import { brandLogo, imgDefault } from './constants'
 
 interface CrawlerInput {
@@ -62,9 +62,7 @@ export default async function crawler({ browser, queryBrand, limit, webhookUrl, 
       window.scrollBy(0, window.innerHeight)
     })
 
-    // await page.waitForTimeout(3000)
-
-    await waitForTimeout(6000)
+    // await waitForTimeout(6000)
 
     let list = await page.evaluate(() => {
       function pageLogic(element: Element) {
@@ -99,6 +97,8 @@ export default async function crawler({ browser, queryBrand, limit, webhookUrl, 
       previousEnList = [...list]
       list = _list
     }
+
+    await screenshotAndUpdateUrl(page, list)
 
     console.log(list)
 
