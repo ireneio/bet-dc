@@ -1,6 +1,6 @@
 import { MessageBuilder } from 'discord-webhook-node'
 import { bulkSendMessage } from '../discord/webhook'
-import { CrawlerReturnObject, filterDuplicate, screenshotAndUpdateUrl, waitForTimeout } from './helper'
+import { CrawlerReturnObject, filterDuplicate, screenshotAndUpdateUrl } from './helper'
 import { brandLogo, imgDefault } from './constants'
 
 interface CrawlerInput {
