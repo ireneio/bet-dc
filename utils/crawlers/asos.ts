@@ -133,8 +133,9 @@ export default async function crawler({ browser, queryBrand, limit, webhookUrl, 
     }
 
     if (list.length > 0) {
-      console.log(list)
       await screenshotAndUpdateUrl(page, list)
+      console.log(list)
+      await page.close()
       const messageList: MessageBuilder[] = []
       list.forEach((item: any, index: number) => {
         const { url, price, title, img } = item
@@ -153,8 +154,6 @@ export default async function crawler({ browser, queryBrand, limit, webhookUrl, 
     } else {
       console.log(`asos-${crawlerName}: No New Drops`)
     }
-
-    await page.close()
 
     return { status: true, identifier: `asos-${crawlerName}`, message: 'success' }
   } catch (e) {
