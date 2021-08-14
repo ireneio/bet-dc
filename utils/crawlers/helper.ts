@@ -25,7 +25,12 @@ const getWordsInText = function (text: string) {
 }
 
 export async function waitForTimeout(sleepTime: number) {
-  await new Promise((resolve) => { setTimeout(resolve, sleepTime) })
+  await new Promise((resolve) => {
+    const timeoutId = setTimeout(() => {
+      resolve(true)
+      clearTimeout(timeoutId)
+    }, sleepTime)
+   })
 }
 
 export async function screenshotAndUpdateUrl(page: any, list: CrawlerReturnObject[]) {
