@@ -144,6 +144,25 @@ async function mainRunSingle() {
   }
 }
 
+async function temp() {
+  let browser
+  let proc
+  browser = await puppeteer.launch({
+    headless: true,
+    args: [
+      '--no-sandbox',
+      '--lang=en-US',
+      '--disable-setuid-sandbox'
+    ],
+  })
+  proc = await crawlers.asos({ browser, queryBrand: 'nike', limit: 8, webhookUrl: channels.asosUsNike, crawlerName: 'en_US-nike', locale: 'us' })
+  makeCrawlerResult([proc])
+  proc = await crawlers.asos({ browser, queryBrand: 'nike', limit: 8, webhookUrl: channels.asosUsNike, crawlerName: 'en_US-nike', locale: 'us' })
+  makeCrawlerResult([proc])
+  await browser.close()
+}
+
 export default async function run() {
   await mainRunSingle()
+  // await temp()
 }

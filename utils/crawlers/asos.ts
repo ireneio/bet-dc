@@ -152,6 +152,7 @@ export default async function crawler({ browser, queryBrand, limit, webhookUrl, 
       })
       await bulkSendMessage(messageList, webhookUrl)
     } else {
+      await page.close()
       console.log(`asos-${crawlerName}: No New Drops`)
     }
 

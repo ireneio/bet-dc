@@ -90,6 +90,7 @@ export default async function crawler({ browser, queryBrand, limit, webhookUrl, 
       })
       await bulkSendMessage(messageList, webhookUrl)
     } else {
+      await page.close()
       console.log(`${siteBrand}-${crawlerName}: No New Drops`)
     }
 
