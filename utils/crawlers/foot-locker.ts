@@ -112,7 +112,7 @@ export default async function crawler({ browser, queryBrand, limit, webhookUrl, 
         list = _list
       } else if (crawlerName === 'hoka-one-one') {
         const _list = filterDuplicate(list, previousEastBayHoka)
-        previousFootLockerConverse = [...list]
+        previousEastBayHoka = [...list]
         list = _list
       }
     }
