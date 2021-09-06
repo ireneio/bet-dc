@@ -3,8 +3,10 @@ import crawlers from '~/utils/crawlers/'
 import puppeteer from 'puppeteer-extra'
 import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 import { waitForTimeout } from './crawlers/helper'
+import AdblockerPlugin from 'puppeteer-extra-plugin-adblocker'
 
 puppeteer.use(StealthPlugin())
+puppeteer.use(AdblockerPlugin({ blockTrackers: true }))
 
 const isHeadless = true
 

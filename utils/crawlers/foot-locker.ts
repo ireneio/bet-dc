@@ -76,41 +76,41 @@ export default async function crawler({ browser, queryBrand, limit, webhookUrl, 
     list = list.slice(0, limit)
 
     if (siteBrand === 'footlocker') {
-      if (crawlerName === 'new-balance') {
+      if (queryBrand === 'new-balance') {
         const _list = filterDuplicate(list, previousFootLockerNewbalance)
         previousFootLockerNewbalance = [...list]
         list = _list
-      } else if (crawlerName === 'nike') {
+      } else if (queryBrand === 'nike') {
         const _list = filterDuplicate(list, previousFootLockerNike)
         previousFootLockerNike = [...list]
         list = _list
-      } else if (crawlerName === 'adidas') {
+      } else if (queryBrand === 'adidas') {
         const _list = filterDuplicate(list, previousFootLockerAdidas)
         previousFootLockerAdidas = [...list]
         list = _list
-      } else if (crawlerName === 'converse') {
+      } else if (queryBrand === 'converse') {
         const _list = filterDuplicate(list, previousFootLockerConverse)
         previousFootLockerConverse = [...list]
         list = _list
       }
     } else if (siteBrand === 'eastbay') {
-      if (crawlerName === 'new-balance') {
+      if (queryBrand === 'new-balance') {
         const _list = filterDuplicate(list, previousEastBayNewBalance)
         previousEastBayNewBalance = [...list]
         list = _list
-      } else if (crawlerName === 'nike') {
+      } else if (queryBrand === 'nike') {
         const _list = filterDuplicate(list, previousEastBayNike)
         previousEastBayNike = [...list]
         list = _list
-      } else if (crawlerName === 'adidas') {
+      } else if (queryBrand === 'adidas') {
         const _list = filterDuplicate(list, previousEastBayAdidas)
         previousEastBayAdidas = [...list]
         list = _list
-      } else if (crawlerName === 'converse') {
+      } else if (queryBrand === 'converse') {
         const _list = filterDuplicate(list, previousEastBayConverse)
         previousEastBayConverse = [...list]
         list = _list
-      } else if (crawlerName === 'hoka-one-one') {
+      } else if (queryBrand === 'hoka-one-one') {
         const _list = filterDuplicate(list, previousEastBayHoka)
         previousEastBayHoka = [...list]
         list = _list
