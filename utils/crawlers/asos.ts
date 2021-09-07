@@ -157,7 +157,7 @@ export default async function crawler({ browser, queryBrand, limit, webhookUrl, 
     }
 
     return { status: true, identifier: `asos-${crawlerName}`, message: 'success' }
-  } catch (e) {
+  } catch (e: any) {
     console.log('ERROR:', e.message)
     return { status: false, identifier: `asos-${crawlerName}`, message: e.message }
   }

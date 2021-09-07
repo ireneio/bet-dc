@@ -1,4 +1,4 @@
-FROM node:14.11.0-alpine3.10
+FROM node:14.17-alpine3.11
 
 COPY ./ ./
 
@@ -9,9 +9,9 @@ RUN apk add --no-cache \
   freetype-dev \
   harfbuzz \
   ca-certificates \
-  ttf-freefont \
-  yarn \
-  curl
+  ttf-freefont
+  # yarn
+  # curl
 
 # Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
 # ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \

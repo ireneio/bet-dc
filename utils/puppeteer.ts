@@ -3,10 +3,10 @@ import crawlers from '~/utils/crawlers/'
 import puppeteer from 'puppeteer-extra'
 import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 import { waitForTimeout } from './crawlers/helper'
-import AdblockerPlugin from 'puppeteer-extra-plugin-adblocker'
+// import AdblockerPlugin from 'puppeteer-extra-plugin-adblocker'
 
 puppeteer.use(StealthPlugin())
-puppeteer.use(AdblockerPlugin({ blockTrackers: true }))
+// puppeteer.use(AdblockerPlugin({ blockTrackers: true }))
 
 const isHeadless = true
 
@@ -136,7 +136,7 @@ async function mainRunSingle() {
 
     await browser.close()
 
-  } catch (e) {
+  } catch (e: any) {
     await sendErrorMessage('system', e.message, channels.errorHandling)
     if (browser) {
       await browser.close()
