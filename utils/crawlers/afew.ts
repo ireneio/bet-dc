@@ -26,8 +26,10 @@ export default async function crawler({ browser, queryBrand, limit, webhookUrl, 
       height: vh,
     })
 
-    const host = 'https://en.afew-store.com'
-    const baseUrl = `${host}/collections/sneakers?sort%5B0%5D%5Bfield%5D=created_at&sort%5B0%5D%5Border%5D=desc`
+    // const host = 'https://en.afew-store.com'
+    // const baseUrl = `${host}/collections/sneakers?sort%5B0%5D%5Bfield%5D=created_at&sort%5B0%5D%5Border%5D=desc`
+    const host = 'https://de.afew-store.com'
+    const baseUrl = `${host}/collections/new-sneakers`
 
     await page.evaluateOnNewDocument(() => {
       Object.defineProperty(navigator, 'language', {

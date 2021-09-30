@@ -3,6 +3,7 @@ import crawlers from '~/utils/crawlers/'
 import puppeteer from 'puppeteer-extra'
 import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 import { waitForTimeout } from './crawlers/helper'
+import getProxies from 'get-free-https-proxy'
 // import AdblockerPlugin from 'puppeteer-extra-plugin-adblocker'
 
 puppeteer.use(StealthPlugin())
@@ -25,13 +26,16 @@ async function mainRunSingle() {
   let browser
 
   try {
+    const { host, port } = await useProxy()
     browser = await puppeteer.launch({
       headless: isHeadless,
       args: [
+        `--proxy-server=${host}:${port}`,
         '--no-sandbox',
-        '--lang=ja-JP,ja',
+        '--lang=en-US',
         '--disable-setuid-sandbox'
       ],
+      ignoreHTTPSErrors: true
     })
 
     // nike jp
@@ -45,6 +49,7 @@ async function mainRunSingle() {
     browser = await puppeteer.launch({
       headless: isHeadless,
       args: [
+        `--proxy-server=${host}:${port}`,
         '--no-sandbox',
         '--lang=en-US',
         '--disable-setuid-sandbox'
@@ -146,20 +151,32 @@ async function mainRunSingle() {
   }
 }
 
+function getRandomInt(max: number) {
+  return Math.floor(Math.random() * max)
+}
+
+async function useProxy() {
+  const proxyList = await getProxies()
+  const randomIndex = getRandomInt(proxyList.length)
+  const { host, port } = proxyList[randomIndex]
+  return { host, port }
+}
+
 async function temp() {
   let browser
   let proc
+  const { host, port } = await useProxy()
   browser = await puppeteer.launch({
     headless: true,
     args: [
+      `--proxy-server=${host}:${port}`,
       '--no-sandbox',
       '--lang=en-US',
       '--disable-setuid-sandbox'
     ],
+    ignoreHTTPSErrors: true
   })
-  proc = await crawlers.asos({ browser, queryBrand: 'nike', limit: 8, webhookUrl: channels.asosUsNike, crawlerName: 'en_US-nike', locale: 'us' })
-  makeCrawlerResult([proc])
-  proc = await crawlers.asos({ browser, queryBrand: 'nike', limit: 8, webhookUrl: channels.asosUsNike, crawlerName: 'en_US-nike', locale: 'us' })
+  proc = await crawlers.footLocker({ browser, queryBrand: 'new-balance', limit: 8, webhookUrl: channels.footLockerNewBalance, crawlerName: 'new-balance', siteBrand: 'footlocker' })
   makeCrawlerResult([proc])
   await browser.close()
 }
