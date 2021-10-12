@@ -26,11 +26,11 @@ async function mainRunSingle() {
   let browser
 
   try {
-    const { host, port } = await useProxy()
+    // const { host, port } = await useProxy()
     browser = await puppeteer.launch({
       headless: isHeadless,
       args: [
-        `--proxy-server=${host}:${port}`,
+        // `--proxy-server=${host}:${port}`,
         '--no-sandbox',
         '--lang=en-US',
         '--disable-setuid-sandbox'
@@ -49,7 +49,7 @@ async function mainRunSingle() {
     browser = await puppeteer.launch({
       headless: isHeadless,
       args: [
-        `--proxy-server=${host}:${port}`,
+        // `--proxy-server=${host}:${port}`,
         '--no-sandbox',
         '--lang=en-US',
         '--disable-setuid-sandbox'
