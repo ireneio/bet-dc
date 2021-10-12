@@ -32,7 +32,7 @@ async function mainRunSingle() {
       args: [
         // `--proxy-server=${host}:${port}`,
         '--no-sandbox',
-        '--lang=en-US',
+        '--lang=ja-JP',
         '--disable-setuid-sandbox'
       ],
       ignoreHTTPSErrors: true
