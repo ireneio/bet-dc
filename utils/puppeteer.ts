@@ -26,7 +26,7 @@ async function mainRunSingle() {
   let browser
 
   try {
-    // const { host, port } = await useProxy()
+    const { host, port } = await useProxy()
     browser = await puppeteer.launch({
       headless: isHeadless,
       args: [
@@ -106,9 +106,23 @@ async function mainRunSingle() {
     proc = await crawlers.asos({ browser, queryBrand: 'adidas', limit: 8, webhookUrl: channels.asosEnAdidas, crawlerName: 'en_EN-adidas', locale: '' })
     makeCrawlerResult([proc])
 
-    // afrew
+    // afew
     proc = await crawlers.afew({ browser, queryBrand: 'en', limit: 8, webhookUrl: channels.afewEn, crawlerName: 'en', siteBrand: 'afew' })
     makeCrawlerResult([proc])
+
+    await browser.close()
+
+    await waitForTimeout(3000)
+
+    browser = await puppeteer.launch({
+      headless: isHeadless,
+      args: [
+        `--proxy-server=${host}:${port}`,
+        '--no-sandbox',
+        '--lang=en-US',
+        '--disable-setuid-sandbox'
+      ],
+    })
 
     // footlocker
     proc = await crawlers.footLocker({ browser, queryBrand: 'new-balance', limit: 8, webhookUrl: channels.footLockerNewBalance, crawlerName: 'new-balance', siteBrand: 'footlocker' })
