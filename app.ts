@@ -6,8 +6,9 @@ import cookieParser from 'cookie-parser'
 
 import indexRouter from './routes/index'
 
-import { runPuppeteer, removeImage } from '~/utils/cron'
-import { removeDiskImages } from "./utils/system"
+import { removeImage } from '~/utils/cron'
+// import { removeDiskImages } from "./utils/system"
+import Order from './utils/order'
 
 console.log('[env] SELF_URL', process.env.SELF_URL)
 console.log()
@@ -36,11 +37,15 @@ app.use('*', function (req: Request, res: Response, next: Function): void {
   res.send({ code: 403, message: 'forbidden' })
 })
 
-// removeDiskImages()
-
 Promise.all([
-  runPuppeteer(),
   removeImage()
 ])
+
+/* business logic start */
+
+// init round id by date
+Order.setRoundId()
+
+/* business logic end */
 
 export default app

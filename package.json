@@ -29,6 +29,8 @@
     "get-free-https-proxy": "^2.0.2",
     "http": "0.0.1-security",
     "http-errors": "~1.6.3",
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.34",
     "morgan": "~1.9.1",
     "node-cron": "^3.0.0",
     "nodemon": "^2.0.6",
